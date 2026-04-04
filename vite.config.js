@@ -15,14 +15,15 @@ export default defineConfig({
       // Define entry points
       input: {
         admin: resolve(__dirname, 'src/App.jsx'),
-        widget: resolve(__dirname, 'src/widget/FloatingButton.jsx')
+        widget: resolve(__dirname, 'src/widget/FloatingButton.jsx'),
+        tailwind: resolve(__dirname, 'src/tailwind-entry.css')
       },
       output: {
         entryFileNames: `js/[name].js`,
         chunkFileNames: `js/chunks/[name].js`,
         assetFileNames: (assetInfo) => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-            return `css/index[extname]`; // Force index.css
+            return `css/tailwind-utilities[extname]`; // Use a new filename
           }
           return `media/[name][extname]`;
         }

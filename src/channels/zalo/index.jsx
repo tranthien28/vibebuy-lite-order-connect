@@ -12,7 +12,7 @@ const zalo = {
   pro: true,
 
   defaults: {
-    buttonText: 'Chat qua Zalo',
+    buttonText: 'Chat via Zalo',
     bgColor: '#0068FF',
     textColor: '#ffffff',
     borderRadius: 50,

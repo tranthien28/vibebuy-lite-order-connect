@@ -12,7 +12,7 @@ const viber = {
   pro: true,
 
   defaults: {
-    buttonText: 'Chat qua Viber',
+    buttonText: 'Chat via Viber',
     bgColor: '#7360F2',
     textColor: '#ffffff',
     borderRadius: 50,

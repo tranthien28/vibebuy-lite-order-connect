@@ -40,9 +40,7 @@ const LicenseView = ({ settings, onUpdateSettings, onToast }) => {
       <div className="vb-page-header">
         <h1 className="vb-page-title">License & Activation</h1>
         <div className="flex items-center gap-1.5">
-          <span className={isPro ? 'vb-header-version-green' : 'vb-header-version-gray'}>
-            {isPro ? 'VibeBuy Pro' : 'VibeBuy Lite'}
-          </span>
+           {/* Header clean - status moved to sidebar logo */}
         </div>
       </div>
 

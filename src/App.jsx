@@ -42,9 +42,17 @@ const calcProgress = (channelId, settings) => {
 
 const Sidebar = ({ activeTab, onNavigate, onUpgrade, settings }) => (
   <aside className="vb-sidebar">
-    <div className="vb-sidebar-logo">
-      <div className="vb-logo-icon"><Zap className="w-4 h-4" /></div>
-      <span className="vb-logo-text">VibeBuy</span>
+    <div className="vb-sidebar-logo flex flex-col items-start gap-1">
+      <div className="flex items-center gap-3">
+        <div className="vb-logo-icon"><Zap className="w-4 h-4" /></div>
+        <span className="vb-logo-text">VibeBuy</span>
+      </div>
+      <div className="flex items-center gap-2 ml-[54px] -mt-1">
+        <span className="text-[10px] font-bold text-gray-400 opacity-60 uppercase tracking-tight">{VERSION}</span>
+        <span className={`text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm ${settings.is_pro ? 'bg-amber-100 text-amber-600' : 'bg-gray-100 text-gray-400'}`}>
+          {settings.is_pro ? 'PRO' : 'LITE'}
+        </span>
+      </div>
     </div>
     <nav className="vb-sidebar-nav">
       <button onClick={() => onNavigate('dashboard')} className={`vb-nav-item ${activeTab === 'dashboard' ? 'vb-nav-item--active' : ''}`}>
@@ -75,14 +83,13 @@ const Sidebar = ({ activeTab, onNavigate, onUpgrade, settings }) => (
     </nav>
     <div className="vb-sidebar-bottom">
       <div 
-        className={`vb-version-badge ${!settings.is_pro ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+        className={`vb-version-badge py-3 px-4 rounded-2xl bg-gray-50/50 border border-gray-100/50 ${!settings.is_pro ? 'cursor-pointer hover:bg-gray-100 transition-all' : ''}`}
         onClick={() => !settings.is_pro && onUpgrade()}
       >
         <span className="vb-version-dot" />
-        <span className={settings.is_pro ? 'text-amber-600 font-bold' : ''}>
-          {settings.is_pro ? 'VibeBuy Pro' : 'VibeBuy Lite'}
+        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+           System Status: <span className={settings.is_pro ? 'text-green-500' : 'text-gray-400'}>{settings.is_pro ? 'Optimal' : 'Standard'}</span>
         </span>
-        <span className="vb-version-num">{VERSION}</span>
       </div>
       {!settings.is_pro && (
         <div className="vb-upgrade-box">
@@ -138,14 +145,8 @@ const DashboardContent = ({ activeTab, settings, updateSetting, startConfig, han
           {activeTab === 'help' && 'Help & Tutorials'}
           {activeTab === 'license' && 'License & Activation'}
         </h1>
-        <div className="flex items-center gap-1.5">
-          <span 
-            onClick={() => !settings.is_pro && onUpgrade()}
-            className={settings.is_pro ? 'vb-header-version-green' : 'vb-header-version-gray cursor-pointer hover:bg-gray-200 transition-colors'}
-          >
-            {settings.is_pro ? 'VibeBuy Pro' : 'VibeBuy Lite'}
-          </span>
-          <span className="vb-header-version-gray">{VERSION}</span>
+        <div className="flex items-center gap-3">
+           {/* Header is now clean, version/badge moved to Sidebar Logo */}
         </div>
       </div>
       <div className="vb-content">

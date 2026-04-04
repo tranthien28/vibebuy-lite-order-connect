@@ -101,9 +101,20 @@ class VibeBuy_Frontend {
 		$css_ver  = file_exists( $css_path ) ? filemtime( $css_path ) : VIBEBUY_VERSION;
 
 		wp_enqueue_style(
+			'vibebuy-widget-tailwind-css',
+			VIBEBUY_PLUGIN_URL . 'assets/css/tailwind-utilities.css',
+			array(),
+			VIBEBUY_VERSION
+		);
+
+		// Load static CSS directly from assets (no build required)
+		$css_path = VIBEBUY_PLUGIN_DIR . 'assets/css/index.css';
+		$css_ver  = file_exists( $css_path ) ? filemtime( $css_path ) : VIBEBUY_VERSION;
+
+		wp_enqueue_style(
 			'vibebuy-widget-static-css',
 			VIBEBUY_PLUGIN_URL . 'assets/css/index.css',
-			array(),
+			array( 'vibebuy-widget-tailwind-css' ),
 			$css_ver
 		);
 
@@ -177,8 +188,6 @@ class VibeBuy_Frontend {
 	 * Render the DIV root where the floating React widget will mount.
 	 */
 	public function render_widget_root() {
-		// Load Tailwind CDN for "edit and see" immediate feedback (No build required for CSS)
-		echo '<script src="https://cdn.tailwindcss.com"></script>';
 		echo '<div id="vibebuy-widget-root"></div>';
 	}
 }

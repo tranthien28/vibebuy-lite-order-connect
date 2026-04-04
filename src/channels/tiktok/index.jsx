@@ -12,7 +12,7 @@ const tiktok = {
   pro: true,
 
   defaults: {
-    buttonText: 'Xem TikTok của mình',
+    buttonText: 'Visit our TikTok',
     bgColor: '#000000',
     textColor: '#ffffff',
     borderRadius: 50,

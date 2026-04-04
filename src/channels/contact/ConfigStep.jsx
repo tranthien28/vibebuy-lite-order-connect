@@ -39,7 +39,7 @@ const ConfigStep = ({ channel, settings, updateSetting, onNavigate }) => {
           type="text"
           value={get('title')}
           onChange={e => updateSetting(`${prefix}title`, e.target.value)}
-          placeholder="Yêu cầu tư vấn sản phẩm"
+          placeholder="Send us an inquiry"
           className="w-full h-12 px-4 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold outline-none focus:border-teal-500 transition-all"
         />
         

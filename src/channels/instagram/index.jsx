@@ -12,7 +12,7 @@ const instagram = {
   pro: true,
 
   defaults: {
-    buttonText: 'Chat qua Instagram',
+    buttonText: 'Chat via Instagram',
     bgColor: '#E1306C',
     textColor: '#ffffff',
     borderRadius: 50,

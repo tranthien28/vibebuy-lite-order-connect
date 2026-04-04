@@ -12,7 +12,7 @@ const line = {
   pro: true,
 
   defaults: {
-    buttonText: 'Chat qua Line',
+    buttonText: 'Chat via Line',
     bgColor: '#00C300',
     textColor: '#ffffff',
     borderRadius: 50,

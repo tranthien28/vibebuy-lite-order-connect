@@ -427,11 +427,11 @@ class VibeBuy_API {
 		$settings = get_option( 'vibebuy_lite_settings', array() );
 		$test_data = array(
 			'customer_name'    => 'VibeBuy Test User',
-			'customer_phone'   => '0901234567',
-			'customer_message' => 'This is a test notification from VibeBuy.',
-			'product_name'     => 'Test Product',
+			'customer_phone'   => '+1 555-0123',
+			'customer_message' => 'This is a professional test notification from VibeBuy.',
+			'product_name'     => 'Eco-Friendly Yoga Mat',
 			'product_url'      => home_url(),
-			'product_price'    => '100.000',
+			'product_price'    => '100.00',
 			'product_qty'      => 1
 		);
 

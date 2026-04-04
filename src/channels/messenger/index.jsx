@@ -12,7 +12,7 @@ const messenger = {
   pro: true,
 
   defaults: {
-    buttonText: 'Chat qua Messenger',
+    buttonText: 'Chat via Messenger',
     bgColor: '#0084FF',
     textColor: '#ffffff',
     borderRadius: 50,

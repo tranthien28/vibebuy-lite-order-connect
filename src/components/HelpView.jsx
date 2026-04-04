@@ -53,7 +53,9 @@ const HelpView = ({ onNavigate, initialSection }) => {
                     <span className="w-6 h-6 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-xs font-bold">1</span>
                     <h4 className="font-bold text-gray-800">Connection & API</h4>
                   </div>
-                  <img src="C:\Users\TRAN PC\.gemini\antigravity\brain\1d48f999-38f9-45e9-bf97-b2e465f1b1a5\config_step1_connection_png_1775099501386.png" className="w-full rounded-2xl shadow-xl mb-4 border border-gray-100" alt="Connection Setup" />
+                  <div className="w-full h-48 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 border border-dashed border-gray-200">
+                    <Layout className="w-8 h-8 text-purple-200" />
+                  </div>
                   <p className="text-sm text-gray-500">Choose your channels and enter tokens or webhook URLs to get started.</p>
                </div>
                <div className="group border-b border-gray-100 pb-8 last:border-0">
@@ -61,7 +63,9 @@ const HelpView = ({ onNavigate, initialSection }) => {
                     <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs font-bold">2</span>
                     <h4 className="font-bold text-gray-800">Design Customization</h4>
                   </div>
-                  <img src="C:\Users\TRAN PC\.gemini\antigravity\brain\1d48f999-38f9-45e9-bf97-b2e465f1b1a5\config_step2_appearance_png_1775099521652.png" className="w-full rounded-2xl shadow-xl mb-4 border border-gray-100" alt="Appearance Setup" />
+                  <div className="w-full h-48 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 border border-dashed border-gray-200">
+                    <Palette className="w-8 h-8 text-blue-200" />
+                  </div>
                   <p className="text-sm text-gray-500">Customize layouts, colors, and button positions to match your branding perfectly.</p>
                </div>
                <div className="group border-b border-gray-100 pb-8 last:border-0">
@@ -69,7 +73,9 @@ const HelpView = ({ onNavigate, initialSection }) => {
                     <span className="w-6 h-6 bg-green-100 text-green-600 rounded-lg flex items-center justify-center text-xs font-bold">3</span>
                     <h4 className="font-bold text-gray-800">Display Logic</h4>
                   </div>
-                  <img src="C:\Users\TRAN PC\.gemini\antigravity\brain\1d48f999-38f9-45e9-bf97-b2e465f1b1a5\config_step3_placement_png_1775099537694.png" className="w-full rounded-2xl shadow-xl mb-4 border border-gray-100" alt="Placement Setup" />
+                  <div className="w-full h-48 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 border border-dashed border-gray-200">
+                    <Target className="w-8 h-8 text-green-200" />
+                  </div>
                   <p className="text-sm text-gray-500">Define where buttons appear (Product Pages, Cart, or Global) and set visibility rules.</p>
                </div>
             </div>
@@ -83,7 +89,9 @@ const HelpView = ({ onNavigate, initialSection }) => {
               Setting up Telegram Bot
             </h3>
             
-            <img src="C:\Users\TRAN PC\.gemini\antigravity\brain\1d48f999-38f9-45e9-bf97-b2e465f1b1a5\guide_telegram_bot_png_1775099557789.png" className="w-full rounded-2xl shadow-xl mb-8 border border-gray-100" alt="Telegram Bot Guide" />
+            <div className="w-full h-48 bg-blue-50/50 rounded-2xl flex items-center justify-center mb-8 border border-dashed border-blue-100">
+              <Send className="w-10 h-10 text-blue-200" />
+            </div>
 
             <div className="space-y-8">
               <div className="relative pl-10">
@@ -120,7 +128,9 @@ const HelpView = ({ onNavigate, initialSection }) => {
               Setting up Discord Webhooks
             </h3>
             
-            <img src="C:\Users\TRAN PC\.gemini\antigravity\brain\1d48f999-38f9-45e9-bf97-b2e465f1b1a5\guide_discord_webhook_png_1775099581289.png" className="w-full rounded-2xl shadow-xl mb-8 border border-gray-100" alt="Discord Webhook Guide" />
+            <div className="w-full h-48 bg-indigo-50/50 rounded-2xl flex items-center justify-center mb-8 border border-dashed border-indigo-100">
+              <Hash className="w-10 h-10 text-indigo-200" />
+            </div>
 
             <div className="space-y-8">
               <div className="relative pl-10">
@@ -151,7 +161,9 @@ const HelpView = ({ onNavigate, initialSection }) => {
                 </h3>
              </div>
 
-             <img src="C:\Users\TRAN PC\.gemini\antigravity\brain\1d48f999-38f9-45e9-bf97-b2e465f1b1a5\guide_whatsapp_format_png_1775099597382.png" className="w-full rounded-2xl shadow-xl mb-8 border border-gray-100" alt="WhatsApp Guide" />
+             <div className="w-full h-48 bg-green-50/50 rounded-2xl flex items-center justify-center mb-8 border border-dashed border-green-100">
+                <MessageSquare className="w-10 h-10 text-green-200" />
+             </div>
             
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 mb-8">
                 <h4 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
@@ -160,7 +172,7 @@ const HelpView = ({ onNavigate, initialSection }) => {
                 </h4>
                 <p className="text-sm text-gray-600 leading-relaxed">
                     Always include the country code but <b>DO NOT</b> include +, spaces, or leading zeros. 
-                    Correct example: <code className="bg-white px-2 py-1 rounded text-green-600 font-bold border border-green-100">84912345678</code>
+                    Correct example: <code className="bg-white px-2 py-1 rounded text-green-600 font-bold border border-green-100">15550123456</code>
                 </p>
             </div>
           </div>
