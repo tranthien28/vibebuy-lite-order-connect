@@ -367,6 +367,45 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                 </div>
               </div>
             </section>
+            
+            {/* 3.5 Branding Settings (PRO) */}
+            <section className={`space-y-6 p-6 rounded-3xl border border-dashed transition-all ${!settings.is_pro ? 'border-gray-200 bg-gray-50/30' : 'border-indigo-100 bg-indigo-50/10'}`}>
+               <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Eye className={`w-4 h-4 ${settings.is_pro ? 'text-indigo-500' : 'text-gray-400'}`} />
+                  <h3 className={`text-xs font-black uppercase tracking-widest ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
+                    Branding & Whitelabel {settings.is_pro ? '' : '(PRO)'}
+                  </h3>
+                </div>
+                {!settings.is_pro && (
+                  <span className="bg-amber-400 text-white text-[9px] font-black px-2 py-0.5 rounded shadow-sm uppercase">PRO</span>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-gray-800">Hide "Powered by VibeBuy" label</p>
+                    <p className="text-[11px] text-gray-500">Remove the branding tag from the bottom of the messaging widget.</p>
+                  </div>
+                  <button 
+                    disabled={!settings.is_pro}
+                    onClick={() => updateSetting('hideBranding', !settings.hideBranding)} 
+                    className={`vb-toggle ${settings.hideBranding ? 'vb-toggle--on' : 'vb-toggle--off'} ${!settings.is_pro ? 'grayscale opacity-50' : ''}`}
+                  >
+                    <div className={`vb-toggle-thumb ${settings.hideBranding ? 'vb-toggle-thumb--on' : 'vb-toggle-thumb--off'}`} />
+                  </button>
+                </div>
+
+                {!settings.is_pro && (
+                  <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl">
+                    <p className="text-[10px] text-indigo-600 font-bold italic leading-tight">
+                      * Whitelabeling is a PRO feature. Upgrade to remove our branding and make the plugin your own.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </section>
 
             {/* 4. Visibility & Conditions (PRO) */}
             <section className="space-y-6 bg-slate-50/50 p-6 rounded-3xl border border-gray-100 relative overflow-hidden">

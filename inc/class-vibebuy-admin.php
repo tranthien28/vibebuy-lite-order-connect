@@ -151,6 +151,9 @@ class VibeBuy_Admin
 			'next' => __('Next →', 'vibebuy-order-connect-lite'),
 			'save' => __('Save', 'vibebuy-order-connect-lite'),
 			'backToChannels' => __('← Back to Channels', 'vibebuy-order-connect-lite'),
+			'branding' => __('Branding Settings', 'vibebuy-order-connect-lite'),
+			'removeBranding' => __('Hide "Powered by VibeBuy" label', 'vibebuy-order-connect-lite'),
+			'createOrder' => __('Create WooCommerce Order', 'vibebuy-order-connect-lite'),
 		);
 	}
 }

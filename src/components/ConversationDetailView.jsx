@@ -136,11 +136,26 @@ const ConversationDetailView = ({ id, onBack, isPro }) => {
                    <h4 className="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-3">
                       <ShoppingCart className="w-5 h-5 text-blue-600" /> Full Product Specifications
                    </h4>
-                   {data.product_details?.url && (
-                      <a href={data.product_details.url} target="_blank" className="text-xs font-black text-blue-600 hover:text-blue-700 underline flex items-center gap-1">
-                         View Source Product <ExternalLink className="w-3 h-3" />
-                      </a>
-                   )}
+                   <div className="flex items-center gap-4">
+                      {data.product_details?.url && (
+                         <a href={data.product_details.url} target="_blank" className="text-[10px] font-black text-gray-400 hover:text-blue-600 uppercase tracking-tight flex items-center gap-1 transition-colors">
+                            View Product <ExternalLink className="w-3 h-3" />
+                         </a>
+                      )}
+                      
+                      <button 
+                         disabled={!isPro}
+                         className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                           isPro 
+                             ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-100' 
+                             : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200 opacity-70'
+                         }`}
+                      >
+                         <ShoppingBag className="w-3.5 h-3.5" />
+                         Create Order
+                         {!isPro && <span className="bg-amber-400 text-white text-[7px] px-1.5 py-0.5 rounded shadow-sm ml-1">PRO</span>}
+                      </button>
+                   </div>
                 </div>
                 {data.product_details ? (
                    <div className="p-10">
