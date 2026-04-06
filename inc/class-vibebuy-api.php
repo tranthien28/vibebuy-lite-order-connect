@@ -102,6 +102,8 @@ class VibeBuy_API {
 			'floatingSocial_enabled'  => false,
 			'floatingSocial_position' => 'bottom-right',
 			'buttonText'              => 'Chat with us',
+			'order_creation_enabled'  => true,
+			'order_creation_status'   => 'pending',
 		);
 		$settings                     = get_option( 'vibebuy_lite_settings', array() );
 		$settings['totalConnections'] = VibeBuy_DB::get_total_connections_count();
@@ -155,6 +157,15 @@ class VibeBuy_API {
 		}
 		if ( isset( $params['floatingSocial_position'] ) ) {
 			$settings['floatingSocial_position'] = sanitize_text_field( $params['floatingSocial_position'] );
+		}
+		if ( isset( $params['order_creation_enabled'] ) ) {
+			$settings['order_creation_enabled'] = rest_sanitize_boolean( $params['order_creation_enabled'] );
+		}
+		if ( isset( $params['order_creation_status'] ) ) {
+			// Basic status validation
+			$allowed_statuses = array( 'pending', 'processing', 'on-hold', 'completed' );
+			$status = sanitize_text_field( $params['order_creation_status'] );
+			$settings['order_creation_status'] = in_array( $status, $allowed_statuses ) ? $status : 'pending';
 		}
 
 		// --- Channel-specific settings (dynamic via registry) ---
@@ -321,6 +332,9 @@ class VibeBuy_API {
 		// Render template message before notifying
 		$rendered_message = $this->render_template_message( $data );
 
+		// NEW: Potentially create a WC order
+		$data['order_id'] = $this->maybe_create_wc_order( $data );
+
 		$result = VibeBuy_DB::save_connection( $data );
 
 		if ( ! $result ) {
@@ -407,6 +421,72 @@ class VibeBuy_API {
 
 		$settings = get_option( 'vibebuy_lite_settings', array() );
 		$channel->send_message( $settings, $message );
+	}
+
+	/**
+	 * Create a WooCommerce order based on the inquiry data.
+	 * 
+	 * @param array $data Inquiry data.
+	 * @return int Order ID or 0 if failed.
+	 */
+	private function maybe_create_wc_order( $data ) {
+		if ( ! function_exists( 'wc_create_order' ) ) {
+			return 0;
+		}
+
+		$settings = get_option( 'vibebuy_lite_settings', array() );
+		$is_enabled = isset( $settings['order_creation_enabled'] ) ? $settings['order_creation_enabled'] : true;
+
+		if ( ! $is_enabled ) {
+			return 0;
+		}
+
+		try {
+			$order = wc_create_order( array(
+				'customer_id' => $data['user_id'] ?? 0,
+			) );
+
+			if ( ! $order || is_wp_error( $order ) ) {
+				return 0;
+			}
+
+			$product_id = intval( $data['product_id'] ?? 0 );
+			$qty        = intval( $data['product_qty'] ?? 1 );
+
+			if ( $product_id > 0 ) {
+				$product = wc_get_product( $product_id );
+				if ( $product ) {
+					$order->add_product( $product, $qty );
+				}
+			}
+
+			// Set Billing Address
+			$address = array(
+				'first_name' => sanitize_text_field( $data['customer_name'] ?? '' ),
+				'email'      => sanitize_email( $data['customer_email'] ?? '' ),
+				'phone'      => sanitize_text_field( $data['customer_phone'] ?? '' ),
+			);
+			$order->set_address( $address, 'billing' );
+
+			// Add Note
+			if ( ! empty( $data['customer_message'] ) ) {
+				$order->add_order_note( __( 'Inquiry Message: ', 'vibebuy-order-connect-lite' ) . sanitize_textarea_field( $data['customer_message'] ) );
+			}
+
+			// Set Status
+			$status = isset( $settings['order_creation_status'] ) ? $settings['order_creation_status'] : 'pending';
+			if ( ! vibebuy_is_pro() ) {
+				$status = 'pending'; // Enforcement: Lite always uses pending
+			}
+			$order->set_status( $status );
+
+			$order->calculate_totals();
+			$order->save();
+
+			return $order->get_id();
+		} catch ( Exception $e ) {
+			return 0;
+		}
 	}
 
 	/**

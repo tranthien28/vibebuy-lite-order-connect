@@ -40,6 +40,7 @@ class VibeBuy_DB {
 			customer_country varchar(100) DEFAULT '',
 			product_qty int(11) DEFAULT 1,
 			customer_message text DEFAULT '',
+			order_id bigint(20) DEFAULT 0,
 			created_at datetime DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY  (id),
 			KEY user_id (user_id),
@@ -70,6 +71,7 @@ class VibeBuy_DB {
 			'customer_country' => sanitize_text_field( $data['customer_country'] ?? '' ),
 			'product_qty'      => intval( $data['product_qty'] ?? 1 ),
 			'customer_message' => sanitize_textarea_field( $data['customer_message'] ?? '' ),
+			'order_id'         => intval( $data['order_id'] ?? 0 ),
 			'created_at'       => current_time( 'mysql' ),
 		);
 
@@ -77,7 +79,7 @@ class VibeBuy_DB {
 		$result = $wpdb->insert(
 			$table_name,
 			$insert_data,
-			array( '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s' )
+			array( '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%s' )
 		);
 
 		// If failed, table might be missing or corrupted (common on localhost)

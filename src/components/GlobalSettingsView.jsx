@@ -368,6 +368,59 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
               </div>
             </section>
             
+            {/* 3.2 Order & Conversion (NEW) */}
+            <section className={`space-y-6 p-6 rounded-3xl border border-dashed transition-all ${!settings.is_pro ? 'border-gray-200 bg-gray-50/30' : 'border-green-100 bg-green-50/10'}`}>
+               <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShoppingBag className={`w-4 h-4 ${settings.is_pro ? 'text-green-600' : 'text-gray-400'}`} />
+                  <h3 className={`text-xs font-black uppercase tracking-widest ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
+                    Order & Conversion
+                  </h3>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-gray-800">Auto-create WooCommerce Order</p>
+                    <p className="text-[11px] text-gray-500">Automatically generate a "Pending" order in WooCommerce when a customer submits the form.</p>
+                  </div>
+                  <button 
+                    onClick={() => updateSetting('order_creation_enabled', settings.order_creation_enabled === undefined ? true : !settings.order_creation_enabled)} 
+                    className={`vb-toggle ${settings.order_creation_enabled !== false ? 'vb-toggle--on' : 'vb-toggle--off'}`}
+                  >
+                    <div className={`vb-toggle-thumb ${settings.order_creation_enabled !== false ? 'vb-toggle-thumb--on' : 'vb-toggle-thumb--off'}`} />
+                  </button>
+                </div>
+
+                <div className={`pt-4 border-t border-gray-100 ${!settings.is_pro ? 'opacity-60 grayscale' : ''}`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className={labelClass}>Default Order Status</label>
+                    {!settings.is_pro && (
+                      <span className="bg-amber-400 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm">PRO</span>
+                    )}
+                  </div>
+                  <div className="relative group">
+                    <select 
+                      disabled={!settings.is_pro}
+                      value={settings.order_creation_status || 'pending'}
+                      onChange={(e) => updateSetting('order_creation_status', e.target.value)}
+                      className={inputClass}
+                    >
+                      <option value="pending">Pending Payment</option>
+                      <option value="processing">Processing</option>
+                      <option value="on-hold">On Hold</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                    {!settings.is_pro && <div className="absolute inset-0 cursor-not-allowed" />}
+                  </div>
+                  <p className="text-[10px] text-gray-400 font-medium mt-1.5 leading-tight">
+                    {settings.is_pro ? 'Select the status for newly created orders.' : '* Custom order status is a Pro feature. Default is "Pending Payment".'}
+                  </p>
+                </div>
+              </div>
+            </section>
+
             {/* 3.5 Branding Settings (PRO) */}
             <section className={`space-y-6 p-6 rounded-3xl border border-dashed transition-all ${!settings.is_pro ? 'border-gray-200 bg-gray-50/30' : 'border-indigo-100 bg-indigo-50/10'}`}>
                <div className="flex items-center justify-between">

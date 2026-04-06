@@ -145,6 +145,13 @@ const ConversationsView = ({ onViewDetail, settings }) => {
                         <div>
                           <p className="text-sm font-black text-gray-900 leading-none mb-1">{item.customer_name}</p>
                           <p className="text-[10px] text-gray-400 font-medium flex items-center gap-1"><Mail className="w-3 h-3" /> {item.customer_email}</p>
+                          {item.order_id > 0 && (
+                            <div className="mt-1 flex items-center gap-1.5">
+                              <span className="bg-amber-100 text-amber-700 text-[8px] font-black px-1.5 py-0.5 rounded border border-amber-200 uppercase tracking-tighter flex items-center gap-1">
+                                <ShoppingCart className="w-2.5 h-2.5" /> Order #{item.order_id}
+                              </span>
+                            </div>
+                          )}
                           {item.customer_ip && (
                             <p className="text-[8px] text-gray-300 font-bold mt-1 flex items-center gap-1">
                               <Globe className="w-2.5 h-2.5" /> IP: {item.customer_ip}
