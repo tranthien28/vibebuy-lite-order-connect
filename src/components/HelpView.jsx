@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Send, Hash, MessageSquare, ChevronRight, 
   ExternalLink, CheckCircle2, 
-  AlertCircle, Lock, Layout, Target
+  AlertCircle, Lock, Layout, Camera, Music, Link2, Mail, MessageCircle
 } from 'lucide-react';
 
 const HelpView = ({ onNavigate, initialSection }) => {
@@ -10,42 +10,36 @@ const HelpView = ({ onNavigate, initialSection }) => {
 
   const tabs = [
     { id: 'general', name: 'General Guide', icon: <Layout className="w-4 h-4" /> },
+    { id: 'whatsapp', name: 'WhatsApp', icon: <MessageSquare className="w-4 h-4" /> },
     { id: 'telegram', name: 'Telegram', icon: <Send className="w-4 h-4" /> },
     { id: 'discord', name: 'Discord', icon: <Hash className="w-4 h-4" /> },
-    { id: 'whatsapp', name: 'WhatsApp', icon: <MessageSquare className="w-4 h-4" /> },
-    { id: 'templates', name: 'UI Overrides', icon: <Layout className="w-4 h-4" /> },
-    { id: 'messenger', name: 'Messenger', icon: <Layout className="w-4 h-4" />, pro: true },
-    { id: 'viber', name: 'Viber', icon: <MessageSquare className="w-4 h-4" />, pro: true },
+    { id: 'messenger', name: 'Messenger', icon: <MessageCircle className="w-4 h-4" />, pro: true },
     { id: 'zalo', name: 'Zalo', icon: <MessageSquare className="w-4 h-4" />, pro: true },
+    { id: 'viber', name: 'Viber', icon: <MessageSquare className="w-4 h-4" />, pro: true },
+    { id: 'instagram', name: 'Instagram', icon: <Camera className="w-4 h-4" />, pro: true },
+    { id: 'tiktok', name: 'TikTok', icon: <Music className="w-4 h-4" />, pro: true },
+    { id: 'line', name: 'LINE', icon: <MessageCircle className="w-4 h-4" />, pro: true },
+    { id: 'contact', name: 'Contact Form', icon: <Mail className="w-4 h-4" />, pro: true },
+    { id: 'custom', name: 'Custom Link', icon: <Link2 className="w-4 h-4" />, pro: true },
+    { id: 'templates', name: 'UI Overrides', icon: <Layout className="w-4 h-4" /> },
   ];
 
-  const renderTutorial = () => {
-    const currentTab = tabs.find(t => t.id === activeTab);
-    
-    if (currentTab?.pro) {
-      return (
-        <div className="flex flex-col items-center justify-center h-full text-center py-20 px-8 animate-in fade-in zoom-in-95 duration-500">
-          <div className="w-20 h-20 bg-amber-50 rounded-3xl flex items-center justify-center mb-6 border border-amber-100">
-            <Lock className="w-10 h-10 text-amber-500" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">{currentTab.name} Documentation</h3>
-          <p className="text-gray-500 max-w-sm mb-8">
-            Detailed integration guides for {currentTab.name} are reserved for VibeBuy Pro users. 
-            Upgrade to unlock all messaging engines.
-          </p>
-          <div className="flex gap-4">
-            <button className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-lg shadow-amber-200 transition-all transform hover:-translate-y-1">
-              Upgrade to Pro
-            </button>
-          </div>
+    const renderTutorial = () => {
+      const currentTab = tabs.find(t => t.id === activeTab);
+      
+      const proBadge = currentTab?.pro ? (
+        <div className="mb-6 flex items-center gap-2 bg-amber-50 text-amber-600 px-4 py-2 rounded-xl border border-amber-100 w-fit">
+          <Lock className="w-4 h-4" />
+          <span className="text-xs font-bold uppercase tracking-widest">Pro Feature</span>
+          <span className="text-xs">This channel is available in VibeBuy Pro.</span>
         </div>
-      );
-    }
+      ) : null;
 
-    switch (activeTab) {
-      case 'general':
-        return (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+      switch (activeTab) {
+        case 'general':
+          return (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
             <h3 className="text-xl font-black text-gray-900 mb-6">Mastering VibeBuy Setup</h3>
             <div className="grid grid-cols-1 gap-12">
                <div className="group border-b border-gray-100 pb-8 last:border-0">
@@ -74,7 +68,7 @@ const HelpView = ({ onNavigate, initialSection }) => {
                     <h4 className="font-bold text-gray-800">Display Logic</h4>
                   </div>
                   <div className="w-full h-48 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 border border-dashed border-gray-200">
-                    <Target className="w-8 h-8 text-green-200" />
+                    <Layout className="w-8 h-8 text-green-200" />
                   </div>
                   <p className="text-sm text-gray-500">Define where buttons appear (Product Pages, Cart, or Global) and set visibility rules.</p>
                </div>
@@ -84,6 +78,7 @@ const HelpView = ({ onNavigate, initialSection }) => {
       case 'telegram':
         return (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
             <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Send className="w-6 h-6 text-blue-500" />
               Setting up Telegram Bot
@@ -123,6 +118,7 @@ const HelpView = ({ onNavigate, initialSection }) => {
       case 'discord':
         return (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
             <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Hash className="w-6 h-6 text-[#5865F2]" />
               Setting up Discord Webhooks
@@ -154,6 +150,7 @@ const HelpView = ({ onNavigate, initialSection }) => {
       case 'whatsapp':
         return (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+             {proBadge}
              <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                     <MessageSquare className="w-6 h-6 text-green-500" />
@@ -180,6 +177,7 @@ const HelpView = ({ onNavigate, initialSection }) => {
       case 'templates':
         return (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
             <h3 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-2">
               <Layout className="w-6 h-6 text-purple-500" />
               Customizing the Order Modal
@@ -219,6 +217,158 @@ const HelpView = ({ onNavigate, initialSection }) => {
                 <p className="text-xs text-amber-800 italic">
                   <b>Pro Tip:</b> You can rearrange the Layout, Palette, Target, but do not remove these IDs or the modal logic will break. 
                   The modal uses <b>Tailwind CSS</b> for styling.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'messenger':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <MessageSquare className="w-6 h-6 text-[#0084FF]" />
+              Setting up Facebook Messenger
+            </h3>
+            <div className="space-y-8">
+              <div className="relative pl-10">
+                <div className="absolute left-0 top-0 w-8 h-8 bg-blue-100 text-[#0084FF] rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h4 className="font-bold text-gray-800 mb-2">Find Your Facebook Page ID</h4>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+                  Go to your Facebook Page, click on <b>About</b>, then <b>Page Transparency</b> to view your <b>Page ID</b>. You can also directly enter your Facebook Page URL (e.g. facebook.com/pagename).
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'viber':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <MessageSquare className="w-6 h-6 text-[#7360F2]" />
+              Setting up Viber Chat
+            </h3>
+            <div className="space-y-8">
+              <div className="relative pl-10">
+                <div className="absolute left-0 top-0 w-8 h-8 bg-[#7360F2]/10 text-[#7360F2] rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h4 className="font-bold text-gray-800 mb-2">Create a Viber Bot / Enter Number</h4>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+                  You can enter your personal phone number registered with Viber, or create a Viber Bot account via the <b>Viber Partner Network</b> and retrieve the Bot ID / Token.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'zalo':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <MessageSquare className="w-6 h-6 text-[#0068FF]" />
+              Setting up Zalo Connect
+            </h3>
+            <div className="space-y-8">
+               <div className="relative pl-10">
+                <div className="absolute left-0 top-0 w-8 h-8 bg-blue-100 text-[#0068FF] rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h4 className="font-bold text-gray-800 mb-2">Get your Zalo Phone or OA ID</h4>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+                  You can use either your <b>Personal Phone Number</b> registered with Zalo (e.g. 0912345678) or your <b>Official Account ID</b>. 
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'instagram':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <Camera className="w-6 h-6 text-[#E1306C]" />
+              Setting up Instagram
+            </h3>
+            <div className="space-y-8">
+               <div className="relative pl-10">
+                <div className="absolute left-0 top-0 w-8 h-8 bg-pink-100 text-[#E1306C] rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h4 className="font-bold text-gray-800 mb-2">Get your Instagram Username</h4>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+                  Simply enter your Instagram App username (without the @ symbol). This will redirect customers to ig.me/m/yourusername to start a direct message.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'tiktok':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <Music className="w-6 h-6 text-black" />
+              Setting up TikTok
+            </h3>
+            <div className="space-y-8">
+               <div className="relative pl-10">
+                <div className="absolute left-0 top-0 w-8 h-8 bg-gray-200 text-black rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h4 className="font-bold text-gray-800 mb-2">Get your TikTok Username</h4>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+                  Enter your TikTok profile username. Clicking the button will open your TikTok profile directly in the app.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'line':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <MessageCircle className="w-6 h-6 text-[#00C300]" />
+              Setting up LINE
+            </h3>
+            <div className="space-y-8">
+               <div className="relative pl-10">
+                <div className="absolute left-0 top-0 w-8 h-8 bg-green-100 text-[#00C300] rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h4 className="font-bold text-gray-800 mb-2">Get your LINE ID</h4>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+                  Enter your LINE Official Account ID or personal LINE ID. The plugin uses line.me/ti/p/ to initiate a chat with your account.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'custom':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <Link2 className="w-6 h-6 text-purple-600" />
+              Setting up Custom Link
+            </h3>
+            <div className="space-y-8">
+               <div className="relative pl-10">
+                <div className="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h4 className="font-bold text-gray-800 mb-2">Add Any Destination URL</h4>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+                  You can use the Custom channel to redirect users to <b>any URL</b> (e.g. your support portal, a Google Form, or another platform). Simply paste the full URL including https://.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'contact':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {proBadge}
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <Mail className="w-6 h-6 text-gray-700" />
+              Setting up Contact Form Email
+            </h3>
+            <div className="space-y-8">
+               <div className="relative pl-10">
+                <div className="absolute left-0 top-0 w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                <h4 className="font-bold text-gray-800 mb-2">Email Notifications</h4>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+                  The Contact channel will send an email to the admin with the customer's inquiry details. Ensure that your WordPress mail settings are configured correctly (e.g., via an SMTP plugin).
                 </p>
               </div>
             </div>
