@@ -183,10 +183,10 @@ const AnalyticsView = ({ settings }) => {
       {/* 2. Primary Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { label: 'Active Channels', value: data.active_channels_count || 0, icon: <Zap className="w-5 h-5" />, color: 'bg-blue-400', trend: '+2.4%', sub: 'Total messaging endpoints', gated: false },
-          { label: 'Total Inquiries', value: settings.totalConnections || 0, icon: <ShoppingBag className="w-5 h-5" />, color: 'bg-blue-500', trend: '+8.3%', sub: 'Success leads collected', gated: false },
-          { label: 'Total Clicks', value: data.total_clicks || 0, icon: <MousePointer2 className="w-5 h-5" />, color: 'bg-blue-600', trend: '+12%', sub: 'Total button interactions', gated: true },
-          { label: 'Conv. Rate', value: `${data.cr || 0}%`, icon: <TrendingUp className="w-5 h-5" />, color: 'bg-blue-700', trend: '+2.1%', sub: '(Inquiries / Clicks) × 100', gated: true },
+          { label: 'Active Channels', value: data.active_channels_count || 0, icon: <Zap className="w-5 h-5" />, color: 'bg-blue-400', trend: data.trends?.channels || '+0%', sub: 'Total messaging endpoints', gated: false },
+          { label: 'Total Inquiries', value: settings.totalConnections || 0, icon: <ShoppingBag className="w-5 h-5" />, color: 'bg-blue-500', trend: data.trends?.inquiries || '+0%', sub: 'Success leads collected', gated: false },
+          { label: 'Total Clicks', value: data.total_clicks || 0, icon: <MousePointer2 className="w-5 h-5" />, color: 'bg-blue-600', trend: data.trends?.clicks || '+0%', sub: 'Total button interactions', gated: true },
+          { label: 'Conv. Rate', value: `${data.cr || 0}%`, icon: <TrendingUp className="w-5 h-5" />, color: 'bg-blue-700', trend: data.trends?.cr || '+0%', sub: '(Inquiries / Clicks) × 100', gated: true },
         ].map((stat, i) => (
           <div key={i} className="bg-white p-5 rounded-[20px] border border-[#eef0f5] shadow-sm relative overflow-hidden group">
             {!settings.is_pro && stat.gated && (
@@ -416,8 +416,8 @@ const AnalyticsView = ({ settings }) => {
                       return (
                         <div key={i} className="absolute z-20 group" style={{ left: `${(coord.x / 1000) * 100}%`, top: `${(coord.y / 500) * 100}%` }}>
                            <div className="relative">
-                              <div className={`w-3 h-3 rounded-full shadow-lg ${settings.is_pro ? 'bg-blue-500' : 'bg-blue-500'} relative z-10`} />
-                              <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${settings.is_pro ? 'bg-blue-400' : 'bg-blue-400'}`} style={{ animationDuration: `${1.5 + i * 0.5}s` }} />
+                              <div className={`w-3 h-3 rounded-full shadow-lg ${settings.is_pro ? 'bg-blue-500' : 'bg-blue-500'} relative z-10 animate-pulse`} />
+                              <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${settings.is_pro ? 'bg-blue-400' : 'bg-blue-400'}`} style={{ animationDuration: `${2 + i * 0.5}s` }} />
                               
                               {/* Hover Tooltip */}
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30">
