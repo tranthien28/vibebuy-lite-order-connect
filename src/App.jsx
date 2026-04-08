@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import {
-  Save, Monitor, Smartphone, ArrowLeft, ChevronRight, ChevronLeft, Check,
-  Lock, AlertCircle, LayoutDashboard, Settings, HelpCircle, Zap, BarChart3,
-  ExternalLink, MessageSquare, Shield, Share2, MousePointer2, CheckCircle2, TrendingUp, ShieldCheck, Eye
-} from 'lucide-react';
+import { ArrowLeft, Smartphone, Monitor, Eye } from 'lucide-react';
 
-import { CHANNELS, getChannel } from './channels/registry.jsx';
+import { getChannel } from './channels/registry.jsx';
+import Sidebar from './components/Sidebar.jsx';
+import Toast from './components/Toast.jsx';
+import DashboardContent from './components/DashboardContent.jsx';
 import PreviewWidget from './components/PreviewWidget.jsx';
-import MessageTemplateEditor from './components/MessageTemplateEditor.jsx';
-import HelpView from './components/HelpView.jsx';
-import ConversationsView from './components/ConversationsView.jsx';
-import ConversationDetailView from './components/ConversationDetailView.jsx';
-import LicenseView from './components/LicenseView.jsx';
 import ProUpgradeModal from './components/upgrade/ProUpgradeModal.jsx';
-import GlobalSettingsView from './components/GlobalSettingsView.jsx';
-import AnalyticsView from './components/AnalyticsView.jsx';
 
-// ─── Constants ──────────────────────────────────────────────────
-const i18n = (typeof window !== 'undefined' && window.vibebuyData?.i18n) || {};
-const __ = (key, fallback) => i18n[key] || fallback;
-const STEP_LABELS = ['Connection'];
+// --- Constants ---
 const VERSION = 'v1.0.3';
 
-// ─── Helpers ───────────────────────────────────────────────────
+// --- Helpers ---
 const getUrlParam = (name, fallback) => {
   if (typeof window === 'undefined') return fallback;
   return new URLSearchParams(window.location.search).get(name) || fallback;
@@ -38,262 +27,6 @@ const calcProgress = (channelId, settings) => {
   return done;
 };
 
-// ─── Sub-Components ───────────────────────────────────────────
-
-const Sidebar = ({ activeTab, onNavigate, onUpgrade, settings }) => (
-  <aside className="vb-sidebar">
-    <div className="vb-sidebar-logo flex flex-col items-start gap-1">
-      <div className="flex items-center gap-3">
-        <div className="vb-logo-icon"><Zap className="w-4 h-4" /></div>
-        <span className="vb-logo-text">VibeBuy</span>
-      </div>
-      <div className="flex items-center gap-2 ml-[54px] -mt-1">
-        <span className="text-[10px] font-bold text-gray-400 opacity-60 uppercase tracking-tight">{VERSION}</span>
-        <span className={`text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm ${settings.is_pro ? 'bg-amber-100 text-amber-600' : 'bg-gray-100 text-gray-400'}`}>
-          {settings.is_pro ? 'PRO' : 'LITE'}
-        </span>
-      </div>
-    </div>
-    <nav className="vb-sidebar-nav">
-      <button onClick={() => onNavigate('dashboard')} className={`vb-nav-item ${activeTab === 'dashboard' ? 'vb-nav-item--active' : ''}`}>
-        <LayoutDashboard className="w-4 h-4 shrink-0" /> Dashboard
-      </button>
-      <button onClick={() => onNavigate('inquiries')} className={`vb-nav-item ${activeTab === 'inquiries' || activeTab === 'conversations' ? 'vb-nav-item--active' : ''}`}>
-        <MessageSquare className="w-4 h-4 shrink-0" /> Inquiries
-      </button>
-      <button
-        onClick={() => onNavigate('analytics')}
-        className={`vb-nav-item ${activeTab === 'analytics' ? 'vb-nav-item--active' : ''}`}
-      >
-        <BarChart3 className="w-4 h-4 shrink-0" /> Analytics
-      </button>
-      <button onClick={() => onNavigate('templates')} className={`vb-nav-item ${activeTab === 'templates' ? 'vb-nav-item--active' : ''}`}>
-        <MessageSquare className="w-4 h-4 shrink-0" /> Message Templates
-      </button>
-      <button onClick={() => onNavigate('settings')} className={`vb-nav-item ${activeTab === 'settings' ? 'vb-nav-item--active' : ''}`}>
-        <Settings className="w-4 h-4 shrink-0" /> Global Settings
-      </button>
-      {(window.vibebuyData?.isProInstalled || settings.is_pro) && (
-        <button onClick={() => onNavigate('license')} className={`vb-nav-item ${activeTab === 'license' ? 'vb-nav-item--active' : ''}`}>
-          <ShieldCheck className="w-4 h-4 shrink-0" /> License
-        </button>
-      )}
-      <button onClick={() => onNavigate('help')} className={`vb-nav-item ${activeTab === 'help' ? 'vb-nav-item--active' : ''}`}>
-        <HelpCircle className="w-4 h-4 shrink-0" /> Help
-      </button>
-    </nav>
-    <div className="vb-sidebar-bottom">
-      <div className="vb-version-badge">
-        <div className="vb-version-dot" />
-        <span>VibeBuy</span>
-        <span className="vb-version-num">v1.0.3</span>
-      </div>
-    </div>
-  </aside>
-);
-
-const Toast = ({ message, desc }) => (
-  <div className="vb-toast-wrap">
-    <div className="vb-toast">
-      <div className="vb-toast-icon"><Check className="w-4 h-4 text-green-500" strokeWidth={3} /></div>
-      <div><p className="vb-toast-title">{message}</p><p className="vb-toast-desc">{desc}</p></div>
-    </div>
-  </div>
-);
-
-const DashboardContent = ({ activeTab, settings, updateSetting, setSettings, startConfig, handleSave, saving, onUpgrade, onNavigate, onViewDetail, detailId, helpContext, setToast }) => {
-  const toggleChannel = (channelId) => {
-    const activeChannels = settings.activeChannels || [];
-    const isNowActive = !activeChannels.includes(channelId);
-
-    let newActive;
-    if (settings.is_pro) {
-      newActive = isNowActive
-        ? [...activeChannels, channelId]
-        : activeChannels.filter(id => id !== channelId);
-    } else {
-      newActive = isNowActive ? [channelId] : [];
-    }
-
-    const updatedSettings = { ...settings, activeChannels: newActive };
-    updateSetting('activeChannels', newActive);
-
-    // Autosave
-    handleSave(updatedSettings);
-  };
-
-  return (
-    <>
-      <div className="vb-page-header">
-        <h1 className="vb-page-title">
-          {activeTab === 'dashboard' && 'Dashboard'}
-          {activeTab === 'templates' && 'Message Templates'}
-          {(activeTab === 'conversations' || activeTab === 'inquiries') && 'Leads & Inquiries'}
-          {activeTab === 'analytics' && 'Analytics'}
-          {activeTab === 'settings' && 'Global Settings'}
-          {activeTab === 'help' && 'Help & Tutorials'}
-          {activeTab === 'license' && 'License & Activation'}
-        </h1>
-        <div className="flex items-center gap-3">
-          {/* Header is now clean, version/badge moved to Sidebar Logo */}
-        </div>
-      </div>
-      <div className="vb-content">
-        {activeTab === 'dashboard' && (
-          <>
-            <div className="vb-cards-grid">
-              {/* Card 1: Active Channels */}
-              <div className="vb-card">
-                <div className="vb-card-icon vb-card-icon--blue"><Zap className="w-4 h-4 text-blue-500" /></div>
-                <p className="vb-card-label">Active Channels</p>
-                <div className="flex items-baseline gap-1.5">
-                  <p className="text-3xl font-black text-slate-900 tracking-tight">{settings.activeChannels?.length || 0}</p>
-                  <p className="text-xs font-bold text-slate-300">/ {CHANNELS.length}</p>
-                </div>
-              </div>
-
-              {/* Card 2: Total Inquiries */}
-              <div className="vb-card cursor-pointer border border-blue-50 hover:border-blue-100 transition-all group" onClick={() => onNavigate('inquiries')}>
-                <div className="vb-card-icon vb-card-icon--blue"><MessageSquare className="w-4 h-4 text-blue-500" /></div>
-                <p className="vb-card-label">Total Inquiries</p>
-                <p className="text-3xl font-black text-blue-600 tracking-tight">{settings.totalConnections || 0}</p>
-              </div>
-
-              {/* Card 3: Total Clicks */}
-              <div className="vb-card relative group overflow-hidden">
-                {!settings.is_pro && <div className="vb-card-pro-badge">PRO</div>}
-                <div className="vb-card-icon vb-card-icon--gray opacity-80 group-hover:opacity-100 transition-opacity"><MousePointer2 className="w-4 h-4 text-gray-600" /></div>
-                <p className="vb-card-label">Total Clicks</p>
-                <div className="flex items-baseline gap-2">
-                  <p className={`text-3xl font-black ${!settings.is_pro ? 'text-slate-300 blur-[2px]' : 'text-slate-800'}`}>
-                    {settings.is_pro ? (settings.totalClicks || 0) : '0'}
-                  </p>
-                  {!settings.is_pro && <span className="text-[10px] font-black text-amber-500 uppercase">Gated</span>}
-                </div>
-              </div>
-
-              {/* Card 4: Conv. Rate */}
-              <div className="vb-card relative group overflow-hidden">
-                {!settings.is_pro && <div className="vb-card-pro-badge">PRO</div>}
-                <div className="vb-card-icon vb-card-icon--gray opacity-80 group-hover:opacity-100 transition-opacity"><TrendingUp className="w-4 h-4 text-blue-600" /></div>
-                <p className="vb-card-label">Conv. Rate</p>
-                <div className="flex items-baseline gap-2">
-                  <p className={`text-3xl font-black ${!settings.is_pro ? 'text-slate-300 blur-[2px]' : 'text-slate-800'}`}>
-                    {settings.is_pro ? (settings.cr || '0') + '%' : '0%'}
-                  </p>
-                  {!settings.is_pro && <span className="text-[10px] font-black text-amber-500 uppercase">Gated</span>}
-                </div>
-              </div>
-            </div>
-            <div className="vb-section-card">
-              <div className="vb-section-header"><h2 className="vb-section-title">Messaging Engines</h2><p className="vb-section-subtitle">Configure and manage your messaging channels</p></div>
-              <div className="vb-channel-list">
-                {CHANNELS.map(ch => {
-                  const isActive = (settings.activeChannels || []).includes(ch.id);
-                  const isLocked = ch.pro && !settings.is_pro;
-                  const progress = ch.pro ? 0 : calcProgress(ch.id, settings);
-                  return (
-                    <div key={ch.id} className={`vb-channel-row ${isLocked ? 'opacity-70 grayscale' : ''}`}>
-                      <div className={`vb-channel-icon ${ch.color}`}>{ch.icon}</div>
-                      <div className="vb-channel-info">
-                        <div className="flex items-center gap-2">
-                          <span className="vb-channel-name">{ch.name}</span>
-                          {(!ch.pro || settings.is_pro) ? (
-                            <button
-                              onClick={() => toggleChannel(ch.id)}
-                              className={`vb-toggle ${isActive ? 'vb-toggle--on' : 'vb-toggle--off'} scale-75 origin-left`}
-                            >
-                              <div className={`vb-toggle-thumb ${isActive ? 'vb-toggle-thumb--on' : 'vb-toggle-thumb--off'}`} />
-                            </button>
-                          ) : (
-                            <Lock className="w-3 h-3 text-gray-300" />
-                          )}
-                          <span className={`vb-status-badge ${isActive ? 'vb-status-badge--active' : 'vb-status-badge--inactive'}`}>
-                            {isActive ? 'ACTIVE' : 'IN-ACTIVE'}
-                          </span>
-                        </div>
-                        <p className="vb-channel-desc">{ch.desc || ch.description}</p>
-                        <div className="flex gap-2 mt-1">
-                          {settings[`${ch.id}_show_as_shortcut`] ? (
-                            <span className="text-[9px] font-black bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded border border-blue-100 flex items-center gap-1">
-                              <Share2 className="w-2.5 h-2.5" /> DIRECT SHORTCUT
-                            </span>
-                          ) : (
-                            <span className="text-[9px] font-black bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded border border-blue-100 flex items-center gap-1">
-                              <MousePointer2 className="w-2.5 h-2.5" /> LEAD INQUIRY
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      {(!ch.pro || settings.is_pro) ? (
-                        <div className="flex gap-2">
-                          <button className="vb-configure-btn" onClick={() => startConfig(ch.id)}>Configure</button>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2 px-4 cursor-pointer" onClick={onUpgrade}><span className="text-xs text-gray-400 font-medium whitespace-nowrap hover:text-purple-500 transition-colors">Pro Feature</span></div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </>
-        )}
-        {activeTab === 'templates' && (
-          <div className="vb-section-card mb-20">
-            <div className="vb-section-header"><h2 className="vb-section-title">Global Message Template</h2><p className="vb-section-subtitle">Used by all channels by default.</p></div>
-            <div className="p-6">
-              <MessageTemplateEditor
-                value={settings.global_message_template}
-                onChange={(val) => updateSetting('global_message_template', val)}
-                isPro={settings.is_pro}
-              />
-
-              {/* Floating Footer */}
-              <div className="vb-floating-footer">
-                <button onClick={() => handleSave()} disabled={saving} className="vb-footer-save">
-                  {saving ? <div className="vb-spinner-sm" /> : <Save className="w-4 h-4" />} Save Changes
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        {(activeTab === 'conversations' || activeTab === 'inquiries') && (
-          <ConversationsView settings={settings} onViewDetail={onViewDetail} onUpgrade={onUpgrade} />
-        )}
-        {activeTab === 'analytics' && (
-          <AnalyticsView settings={settings} />
-        )}
-        {activeTab === 'conversation-detail' && (
-          <ConversationDetailView id={detailId} onBack={() => onNavigate('conversations')} isPro={settings.is_pro} />
-        )}
-        {activeTab === 'help' && (
-          <HelpView onNavigate={onNavigate} initialSection={helpContext} />
-        )}
-        {activeTab === 'settings' && (
-          <GlobalSettingsView
-            settings={settings}
-            updateSetting={updateSetting}
-            handleSave={handleSave}
-            saving={saving}
-          />
-        )}
-        {activeTab === 'license' && (
-          <LicenseView
-            settings={settings}
-            onUpdateSettings={setSettings}
-            onToast={(title, desc, type) => setToast({ message: title, desc, type })}
-          />
-        )}
-      </div>
-    </>
-  );
-};
-
-// ConversationDetailView is already imported at the top.
-
-// ─── Main App ──────────────────────────────────────────────────
-
 const App = () => {
   const [activeTab, setActiveTab] = useState(() => getUrlParam('tab', 'dashboard'));
   const [currentStep, setCurrentStep] = useState(() => parseInt(getUrlParam('step', '0'), 10) || 0);
@@ -303,7 +36,7 @@ const App = () => {
   const [settings, setSettings] = useState({
     activeChannels: [],
     global_message_template: '',
-    is_pro: window.vibebuyData?.isPro || false
+    is_pro: window.vibebuyData?.is_pro || false
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -329,8 +62,6 @@ const App = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const url = new URL(window.location);
-
-    // Always keep page=vibebuy for WP stability
     url.searchParams.set('page', 'vibebuy');
     url.searchParams.set('tab', activeTab);
 
@@ -393,7 +124,6 @@ const App = () => {
         setToast({ message: 'Settings Saved', desc: 'Success!' });
         setTimeout(() => {
           setToast(null);
-          // Close wizard after save ONLY if they are on Step 3
           if (currentStep === 3) setCurrentStep(0);
         }, 2000);
       }
@@ -412,13 +142,18 @@ const App = () => {
   );
 
   const channel = getChannel(editChannel);
-  const StepComponent = {
-    1: channel.ConfigStep,
-  }[currentStep];
+  const StepComponent = { 1: channel.ConfigStep }[currentStep];
 
   return (
     <div className="vb-shell">
-      <Sidebar activeTab={activeTab} onNavigate={handleNavigate} onUpgrade={() => setShowUpgradeModal(true)} settings={settings} />
+      <Sidebar 
+        activeTab={activeTab} 
+        onNavigate={handleNavigate} 
+        onUpgrade={() => setShowUpgradeModal(true)} 
+        settings={settings} 
+        version={VERSION}
+      />
+      
       <div className="vb-main">
         {currentStep === 0 ? (
           <DashboardContent
@@ -430,7 +165,6 @@ const App = () => {
             handleSave={handleSave}
             saving={saving}
             onUpgrade={() => setShowUpgradeModal(true)}
-            onHelp={navigateToHelp}
             onNavigate={handleNavigate}
             onViewDetail={(id) => {
               setDetailId(id);
@@ -438,7 +172,9 @@ const App = () => {
             }}
             detailId={detailId}
             helpContext={helpContext}
-            setToast={setToast} />
+            setToast={setToast}
+            calcProgress={calcProgress}
+          />
         ) : (
           <div className="vb-wizard-inner">
             <header className="vb-wizard-header">
@@ -461,13 +197,8 @@ const App = () => {
               </div>
             </header>
 
-            <div className="vb-step-bar pb-8 border-b border-gray-100 mb-8">
-              <p className="text-xs font-medium text-gray-400">Branding and display settings have been moved to the <span className="text-blue-500 font-bold">Global Settings</span> tab for a unified experience.</p>
-            </div>
-
             <main className="p-8">
               <div className="flex flex-col lg:flex-row gap-8">
-
                 {/* Left: Configuration Form */}
                 <div className="flex-1 space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
                   <div className="vb-section-card p-0 overflow-visible">
@@ -488,11 +219,10 @@ const App = () => {
                         </div>
                       )}
                     </div>
-
                   </div>
                 </div>
 
-                {/* Right: Live Preview (Sticky) */}
+                {/* Right: Live Preview */}
                 <div className="lg:w-[320px] shrink-0">
                   <div className="sticky top-8 space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
                     <div className="flex items-center justify-between px-1">
@@ -512,16 +242,11 @@ const App = () => {
                         </button>
                       </div>
                     </div>
-
-                    <div className="bg-slate-50 rounded-[2rem] p-3 border border-slate-100 flex items-center justify-center relative overflow-hidden shadow-inner">
-                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
-                      <div className="relative z-10 w-full flex justify-center">
-                        <PreviewWidget settings={settings} previewMode={previewMode} editChannel={editChannel} />
-                      </div>
+                    <div className="bg-slate-50 rounded-[2rem] p-3 border border-slate-100 flex items-center justify-center relative shadow-inner">
+                      <PreviewWidget settings={settings} previewMode={previewMode} editChannel={editChannel} />
                     </div>
-
                     <div className="p-5 bg-white border border-gray-100 rounded-3xl shadow-sm">
-                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                      <p className="vb-label flex items-center gap-2">
                         <Eye className="w-3 h-3 text-blue-500" /> Visual Context
                       </p>
                       <p className="text-[11px] text-gray-500 leading-relaxed font-medium">
@@ -532,37 +257,11 @@ const App = () => {
                 </div>
               </div>
             </main>
-
-            <footer className="vb-wizard-footer">
-              <button
-                onClick={() => setCurrentStep(0)}
-                className="vb-footer-back"
-              >
-                <ChevronLeft className="w-4 h-4" /> Exit
-              </button>
-
-              <div className="flex items-center gap-4">
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleSave()}
-                    disabled={saving}
-                    className="vb-footer-save"
-                  >
-                    {saving ? <div className="vb-spinner-sm" /> : <Save className="w-4 h-4" />}
-                    Save Connection
-                  </button>
-                </div>
-              </div>
-            </footer>
           </div>
         )}
       </div>
 
-      <ProUpgradeModal
-        isOpen={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-      />
-
+      <ProUpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} />
       {toast && <Toast {...toast} />}
     </div>
   );

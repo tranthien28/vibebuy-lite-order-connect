@@ -13,10 +13,10 @@ const PricingTable = () => {
             <p className="text-[9px] text-gray-400">Forever Free</p>
           </div>
           <div className="px-4 pb-4 space-y-2 text-left">
-            <FeatureRow label="3 Lite Channels" active />
-            <FeatureRow label="Standard Inquiries" active />
-            <FeatureRow label="Global Template" active />
-            <FeatureRow label="Analytics & Export" disabled />
+            <FeatureRow label="3 Free Channels" active />
+            <FeatureRow label="Lead Limit (10)" active />
+            <FeatureRow label="Basic Analytics" active />
+            <FeatureRow label="Export & Schedule" disabled />
           </div>
         </div>
 
@@ -36,10 +36,10 @@ const PricingTable = () => {
           </div>
           
           <div className="px-4 pb-4 space-y-2 text-left">
-            <FeatureRow label="11+ Premium Channels" active pro />
-            <FeatureRow label="Advanced Analytics" active pro />
-            <FeatureRow label="CSV Export & Orders" active pro />
-            <FeatureRow label="Priority Support" active pro />
+            <FeatureRow label="Unlimited Channels" active pro />
+            <FeatureRow label="Unlimited Leads" active pro />
+            <FeatureRow label="Export Leads to CSV" active pro />
+            <FeatureRow label="Business Schedule" active pro />
           </div>
         </div>
       </div>
@@ -57,8 +57,8 @@ const PricingTable = () => {
         <div className="flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-blue-500" />
           <div className="text-left">
-            <p className="text-[11px] font-bold text-gray-800">Support</p>
-            <p className="text-[10px] text-gray-500">Priority Assistance</p>
+            <p className="text-[11px] font-bold text-gray-800">Analytics</p>
+            <p className="text-[10px] text-gray-500">Real-time Insights</p>
           </div>
         </div>
       </div>

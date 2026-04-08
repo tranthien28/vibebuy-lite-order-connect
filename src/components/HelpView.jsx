@@ -206,7 +206,7 @@ const HelpView = ({ onNavigate, initialSection }) => {
         );
       case 'whatsapp':
         return (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="vb-section-card animate-in fade-in slide-in-from-bottom-4 duration-500">
              {proBadge}
              <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">

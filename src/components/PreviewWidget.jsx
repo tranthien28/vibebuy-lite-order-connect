@@ -144,9 +144,31 @@ const PreviewWidget = ({ settings, previewMode, editChannel }) => {
                 <div className="h-2 bg-gray-100 rounded-full w-2/5 mt-1" />
               </div>
 
+              {/* Variations (Mock) */}
+              <div className="space-y-3 mb-6">
+                 <div className="flex gap-2">
+                    {['S', 'M', 'L'].map(size => (
+                       <div key={size} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-[10px] font-bold ${size === 'M' ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-gray-100 text-gray-400'}`}>
+                          {size}
+                       </div>
+                    ))}
+                 </div>
+                 <div className="h-8 w-full bg-gray-50 border border-gray-100 rounded-lg flex items-center px-3 justify-between">
+                    <span className="text-[10px] font-bold text-gray-400">Select Color</span>
+                    <div className="w-2 h-2 border-r border-b border-gray-400 rotate-45 mb-1" />
+                 </div>
+              </div>
+
               {/* Buttons */}
-              <div>
+              <div className="space-y-4">
                 {ButtonGroup}
+                
+                {!settings.hideBranding && (
+                  <div className="flex items-center justify-center gap-1 opacity-40">
+                    <span className="text-[8px] font-black uppercase text-gray-400 tracking-tighter">Powered by</span>
+                    <span className="text-[8px] font-black uppercase text-blue-600 tracking-tighter">VibeBuy</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

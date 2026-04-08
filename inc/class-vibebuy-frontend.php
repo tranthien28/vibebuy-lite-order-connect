@@ -132,8 +132,9 @@ class VibeBuy_Frontend {
 			
 			// Try WooCommerce billing first
 			if ( class_exists( 'WooCommerce' ) ) {
-				$user_data['firstName'] = get_user_meta( $current_user->ID, 'billing_first_name', true );
-				$user_data['lastName']  = get_user_meta( $current_user->ID, 'billing_last_name', true );
+				$user_data['firstName']    = get_user_meta( $current_user->ID, 'billing_first_name', true );
+				$user_data['lastName']     = get_user_meta( $current_user->ID, 'billing_last_name', true );
+				$user_data['billingEmail'] = get_user_meta( $current_user->ID, 'billing_email', true );
 			}
 
 			// Fallback to WP profile names
@@ -170,17 +171,23 @@ class VibeBuy_Frontend {
 				'orderViaWhatsApp'  => __( 'Order via WhatsApp', 'vibebuy-order-connect-lite' ),
 				'orderVia'          => __( 'Order via', 'vibebuy-order-connect-lite' ),
 				'getQuote'          => __( 'Get a Quote', 'vibebuy-order-connect-lite' ),
-				'fullName'          => __( 'Full Name', 'vibebuy-order-connect-lite' ),
-				'emailAddress'      => __( 'Email Address', 'vibebuy-order-connect-lite' ),
-				'messageOptional'   => __( 'Message (Optional)', 'vibebuy-order-connect-lite' ),
-				'send'              => __( 'Send', 'vibebuy-order-connect-lite' ),
-				'requestSent'       => __( 'Request Sent!', 'vibebuy-order-connect-lite' ),
-				'redirectingToChat' => __( 'Redirecting you to chat...', 'vibebuy-order-connect-lite' ),
+				'firstName'         => __( 'First Name', 'vibebuy-order-connect-lite' ),
+				'lastName'          => __( 'Last Name', 'vibebuy-order-connect-lite' ),
+				'email'             => __( 'Email Address', 'vibebuy-order-connect-lite' ),
+				'phone'             => __( 'Phone Number', 'vibebuy-order-connect-lite' ),
+				'note'              => __( 'Note', 'vibebuy-order-connect-lite' ),
+				'sendRequest'       => __( 'Connect & Order', 'vibebuy-order-connect-lite' ),
+				'successTitle'      => __( 'Success!', 'vibebuy-order-connect-lite' ),
+				'successDescription'=> __( 'Your request has been sent successfully.', 'vibebuy-order-connect-lite' ),
 				'enterYourName'     => __( 'Enter your name', 'vibebuy-order-connect-lite' ),
 				'yourEmail'         => __( 'your@email.com', 'vibebuy-order-connect-lite' ),
 				'hiInterested'      => __( 'Hi, I\'m interested in this product...', 'vibebuy-order-connect-lite' ),
 				'inquiringAbout'    => __( 'Inquiring about:', 'vibebuy-order-connect-lite' ),
 				'fillDetails'       => __( 'Please fill in your details to stay connected.', 'vibebuy-order-connect-lite' ),
+				'selectOptions'     => __( 'Select Options', 'vibebuy-order-connect-lite' ),
+				'outOfStock'        => __( 'Out of Stock', 'vibebuy-order-connect-lite' ),
+				'poweredBy'         => __( 'Powered by', 'vibebuy-order-connect-lite' ),
+				'quantity'          => __( 'Quantity', 'vibebuy-order-connect-lite' ),
 			),
 		);
 

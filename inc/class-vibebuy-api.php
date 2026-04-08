@@ -186,6 +186,9 @@ class VibeBuy_API
 		if (isset($params['orderModal_autoOff'])) {
 			$settings['orderModal_autoOff'] = rest_sanitize_boolean($params['orderModal_autoOff']);
 		}
+		if (isset($params['orderModal_allowRepeat'])) {
+			$settings['orderModal_allowRepeat'] = rest_sanitize_boolean($params['orderModal_allowRepeat']);
+		}
 		if (isset($params['floatingSocial_enabled'])) {
 			$settings['floatingSocial_enabled'] = rest_sanitize_boolean($params['floatingSocial_enabled']);
 		}
@@ -356,18 +359,29 @@ class VibeBuy_API
 			return new WP_Error('missing_fields', __('Name is required.', 'vibebuy-order-connect-lite'), array('status' => 400));
 		}
 
+		// Detect country via WooCommerce Geolocation if available
+		$customer_country = '';
+		if ( class_exists( 'WC_Geolocation' ) ) {
+			$location         = WC_Geolocation::geolocate_ip();
+			$customer_country = $location['country'] ?? '';
+		}
+
 		$data = array(
-			'user_id' => get_current_user_id(),
-			'channel_id' => $params['channel_id'] ?? 'global', // 'global' represents the new single-button flow
-			'product_id' => $params['product_id'] ?? 0,
-			'customer_name' => $params['customer_name'],
-			'customer_email' => $params['customer_email'] ?? '',
-			'customer_phone' => $params['customer_phone'] ?? '',
-			'customer_ip' => $_SERVER['REMOTE_ADDR'] ?? '',
-			'customer_country' => '', // Placeholder for Pro auto-detection
-			'product_qty' => $params['product_qty'] ?? 1,
+			'user_id'          => get_current_user_id(),
+			'channel_id'       => $params['channel_id'] ?? 'global',
+			'product_id'       => $params['product_id'] ?? 0,
+			'customer_name'    => $params['customer_name'],
+			'customer_email'   => $params['customer_email'] ?? '',
+			'customer_phone'   => $params['customer_phone'] ?? '',
+			'customer_ip'      => $_SERVER['REMOTE_ADDR'] ?? '',
+			'customer_country' => $customer_country,
+			'product_qty'      => $params['product_qty'] ?? 1,
 			'customer_message' => $params['customer_message'] ?? '',
+			'referrer'         => !empty($params['referrer']) && strpos($params['referrer'], 'wp-admin') === false ? esc_url_raw($params['referrer']) : '',
 		);
+
+		// PRO: Add additional metadata (Device, OS, Browser, etc.)
+		$data = apply_filters('vibebuy_customer_context', $data, $params);
 
 		// Render template message before notifying
 		$rendered_message = $this->render_template_message($data);

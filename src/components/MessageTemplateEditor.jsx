@@ -16,6 +16,8 @@ const TAGS = {
     { tag: '{{first_name}}',     desc: 'First Name' },
     { tag: '{{phone}}',          desc: 'Phone' },
     { tag: '{{email}}',          desc: 'Email' },
+    { tag: '{{customer_country}}', desc: 'Country (PRO)' },
+    { tag: '{{customer_device}}',  desc: 'Device/OS (PRO)' },
   ],
   '🏢 Store': [
     { tag: '{{site_name}}',  desc: 'Name' },

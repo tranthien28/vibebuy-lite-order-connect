@@ -65,29 +65,20 @@ const ConversationsView = ({ onViewDetail, settings, onUpgrade }) => {
   };
 
   return (
-    <div className="vb-connections-container">
+    <div className="vb-connections-container animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="vb-section-card">
-        {/* 1. Header Section with Search & Export (Now INSIDE the card) */}
-        <div className="p-8 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="vb-section-header flex justify-between items-center">
           <div>
-            <h2 className="text-xl font-black text-gray-900 tracking-tight flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-blue-500" />
-              Inquiries
-            </h2>
-            <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wider mt-1 opacity-70">
-              Manage your leads and customer chat history
-            </p>
+            <h2 className="vb-page-title">Lead Inquiries</h2>
+            <p className="vb-section-subtitle">Realtime archive of messaging connection requests.</p>
           </div>
-
           <div className="flex items-center gap-3">
-            <div className="relative group/search">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-gray-400 group-focus-within/search:text-blue-500 transition-colors" />
-              </div>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input 
                 type="text" 
-                placeholder="Search by name or email..." 
-                className="w-64 h-10 pl-10 pr-4 bg-gray-50/50 border border-gray-200 rounded-2xl text-xs font-bold text-gray-700 shadow-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none"
+                placeholder="Filter leads..." 
+                className="vb-input !w-64 pl-10"
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPaged(1); }}
               />
@@ -103,9 +94,9 @@ const ConversationsView = ({ onViewDetail, settings, onUpgrade }) => {
             >
                <Download className="w-3.5 h-3.5" /> 
                <span>Export</span>
-               {!settings?.is_pro && (
-                 <div className="absolute top-0 right-0 bg-amber-400 text-white text-[7px] font-black px-1 py-0.5 rounded-bl shadow-sm">PRO</div>
-               )}
+                {!settings?.is_pro && (
+                  <div className="absolute top-0 right-0 vb-badge-pro !rounded-none !rounded-bl-lg !px-2 !py-1">PRO</div>
+                )}
             </button>
           </div>
         </div>
@@ -119,7 +110,7 @@ const ConversationsView = ({ onViewDetail, settings, onUpgrade }) => {
             <div className="flex-1">
                 <div className="flex items-center gap-2 mb-0.5">
                   <p className="text-[11px] font-black text-amber-900 uppercase tracking-tight">Lite Version Limit</p>
-                  <span className="bg-amber-100 text-amber-800 text-[8px] font-black px-1.5 py-0.5 rounded">10 INQUIRIES MAX</span>
+                  <span className="vb-badge-pro">10 INQUIRIES MAX</span>
                 </div>
                 <p className="text-[11px] text-amber-800/70 font-bold leading-relaxed italic">Upgrade to Pro for unlimited storage and full history.</p>
             </div>
@@ -149,11 +140,11 @@ const ConversationsView = ({ onViewDetail, settings, onUpgrade }) => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-slate-50/50 border-b border-slate-100">
-                      <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">Customer Profile</th>
-                      <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">Product Context</th>
-                      <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">Channel</th>
-                      <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">Message</th>
-                      <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
+                      <th className="vb-label border-b border-gray-50 px-8 py-5 text-left bg-gray-50/30 font-black">Target Item</th>
+                      <th className="vb-label border-b border-gray-50 px-4 py-5 text-left bg-gray-50/30 font-black">Customer</th>
+                      <th className="vb-label border-b border-gray-50 px-4 py-5 text-left bg-gray-50/30 font-black">Channel</th>
+                      <th className="vb-label border-b border-gray-50 px-4 py-5 text-left bg-gray-50/30 font-black">Timestamp</th>
+                      <th className="vb-label border-b border-gray-50 px-8 py-5 text-right bg-gray-50/30 font-black">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
@@ -225,8 +216,8 @@ const ConversationsView = ({ onViewDetail, settings, onUpgrade }) => {
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     Showing {connections.length} <span className="opacity-40">/</span> {totalItems} Inquiries
                     {!settings?.is_pro && (
-                      <span className="flex items-center gap-1 bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[8px]">
-                        <Lock className="w-2.5 h-2.5" /> LITE LIMIT REACHED
+                      <span className="vb-badge-pro ml-2">
+                         LITE LIMIT REACHED
                       </span>
                     )}
                 </p>

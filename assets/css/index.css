@@ -148,17 +148,22 @@ body.wp-admin {
 }
 
 .vb-logo-icon {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
-  background-size: 200% 200%;
-  animation: gradientBG 5s ease infinite;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.25);
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.vb-logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
 }
 
 @keyframes gradientBG {
@@ -645,7 +650,7 @@ body.wp-admin {
 
 .vb-toggle {
   position: relative;
-  width: 44px;
+  width: 42px;
   height: 24px;
   border-radius: 99px;
   border: none;
@@ -675,11 +680,11 @@ body.wp-admin {
 }
 
 .vb-toggle-thumb--on {
-  transform: translateX(23px);
+  transform: translateX(0px);
 }
 
 .vb-toggle-thumb--off {
-  transform: translateX(3px);
+  transform: translateX(0px);
 }
 
 .vb-configure-btn {
@@ -1719,4 +1724,81 @@ body.wp-admin {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FRONTEND THEME STANDARDIZATION & RESET
+   Ensures the widget and modal look consistent across all themes.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Kill black borders from themes */
+.vibebuy-modal-system button,
+.vibebuy-inline-container button,
+.vibebuy-modal-system input,
+.vibebuy-modal-system select,
+.vibebuy-modal-system textarea {
+  border: 1px solid #f1f5f9 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.vibebuy-modal-system button.vibebuy-bg-global,
+.vibebuy-modal-system button[type="submit"],
+.vibebuy-inline-container button {
+  border: none !important;
+}
+
+/* Protect modal typography from theme leaks and restore logical spacing */
+.vibebuy-modal-system h1,
+.vibebuy-modal-system h2,
+.vibebuy-modal-system h3,
+.vibebuy-modal-system h4,
+.vibebuy-modal-system p,
+.vibebuy-modal-system label {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif !important;
+  margin-top: 0 !important;
+  margin-left: 0 !important;
+  line-height: 1.4 !important;
+  text-transform: none;
+}
+
+/* Clear, balanced labels */
+.vibebuy-modal-system label {
+  display: block !important;
+  font-size: 9px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  color: #9ca3af !important;
+  margin-bottom: 6px !important;
+  letter-spacing: 0.05em !important;
+  padding: 0 !important;
+}
+
+/* Ensure grids reach full width and preserve Tailwind spacing */
+.vibebuy-modal-system .grid,
+.vibebuy-modal-system .flex {
+  box-sizing: border-box !important;
+}
+
+/* Fix product title specifically */
+#vibe-slot-product-name h3 {
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+  margin-bottom: 2px !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Price slot with proper breathing room */
+#vibe-slot-product-price {
+  margin-bottom: 12px !important;
+}
+
+#vibe-slot-product-price span {
+  display: block !important;
+}
+
+/* Quantity layout refinement */
+#vibe-slot-quantity {
+  margin-top: 4px !important;
 }

@@ -1,31 +1,33 @@
-import React from 'react';
-import { Check, Zap, BarChart3, MousePointer2, Sparkles } from 'lucide-react';
+import { 
+  Check, Zap, BarChart3, MousePointer2, Sparkles, 
+  Target, Share2, Clock 
+} from 'lucide-react';
 
 const BENEFITS = [
   { 
     icon: <Sparkles className="w-4 h-4 text-amber-500" />, 
-    title: '11+ Premium Channels', 
-    desc: 'Unlock Zalo, Messenger, TikTok, Instagram, and more.' 
+    title: 'Omnichannel Messaging', 
+    desc: 'Unlock 11+ channels including Zalo, Messenger, TikTok, Instagram.' 
   },
   { 
     icon: <BarChart3 className="w-4 h-4 text-blue-500" />, 
     title: 'Advanced Analytics', 
-    desc: 'Track every click, view, and conversion rate.' 
+    desc: 'Real-time conversion tracking, heatmaps, and hourly trends.' 
   },
   { 
-    icon: <MousePointer2 className="w-4 h-4 text-purple-500" />, 
-    title: 'Export & Order Tools', 
-    desc: 'Export leads to CSV and create WooCommerce orders.' 
+    icon: <Target className="w-4 h-4 text-purple-500" />, 
+    title: 'Smart Targeting Pro', 
+    desc: 'Filter by OS (iOS/Android), Browser, and Geo-location.' 
   },
   { 
-    icon: <Sparkles className="w-4 h-4 text-pink-500" />, 
-    title: 'Pro Customization', 
-    desc: 'Custom icons, premium themes, and no branding.' 
+    icon: <Share2 className="w-4 h-4 text-pink-500" />, 
+    title: 'Social Shortcut Bar', 
+    desc: 'Floating mini-icons for secondary social links & whitelabel.' 
   },
   { 
-    icon: <Zap className="w-4 h-4 text-green-500" />, 
-    title: 'Priority Support', 
-    desc: '24/7 dedicated assistance with < 2h response.' 
+    icon: <Clock className="w-4 h-4 text-green-500" />, 
+    title: 'Business Hours & Stock', 
+    desc: 'Automate visibility based on shop hours or inventory levels.' 
   },
 ];
 

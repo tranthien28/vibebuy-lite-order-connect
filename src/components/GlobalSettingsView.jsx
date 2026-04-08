@@ -9,8 +9,8 @@ const PRESET_COLORS = [
 const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => {
   const [previewMode, setPreviewMode] = useState('mobile');
 
-  const inputClass = "w-full h-9 px-3 bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:border-blue-500 transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed";
-  const labelClass = "block text-[11px] font-bold text-gray-500 uppercase tracking-tight mb-1.5";
+  const inputClass = "vb-input";
+  const labelClass = "vb-label";
 
   return (
     <div className="vb-section-card mb-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -27,7 +27,7 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
             {/* 1. Visual Branding */}
             <section className="space-y-6">
               <div className="pb-2 border-b border-gray-50">
-                <h3 className="text-xs font-black uppercase text-gray-900 tracking-widest">Visual Style</h3>
+                <h3 className="vb-section-title">Visual Style</h3>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -66,10 +66,10 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                       className="flex-1 bg-transparent border-none text-[10px] font-mono font-bold uppercase outline-none"
                     />
                     {!settings.is_pro ? (
-                      <>
+                      <div className="group relative">
                         <Lock className="w-3 h-3 text-gray-400 mr-1" />
                         <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[8px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none uppercase">Custom Hex (PRO)</div>
-                      </>
+                      </div>
                     ) : (
                       <div className="w-2 h-2 rounded-full bg-blue-500 mr-2 animate-pulse" title="Pro Unlocked" />
                     )}
@@ -111,10 +111,10 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                       className="flex-1 bg-transparent border-none text-[10px] font-mono font-bold uppercase outline-none"
                     />
                     {!settings.is_pro ? (
-                      <>
+                      <div className="group relative">
                         <Lock className="w-3 h-3 text-gray-400 mr-1" />
                         <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[8px] font-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none uppercase">Custom Hex (PRO)</div>
-                      </>
+                      </div>
                     ) : (
                       <div className="w-2 h-2 rounded-full bg-blue-500 mr-2 animate-pulse" />
                     )}
@@ -198,7 +198,7 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                         <p className="text-[9px] text-gray-400 font-bold uppercase mt-1">Mobile Stacked / Desktop Inline</p>
                       </div>
                     </div>
-                    <span className="bg-amber-400 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm">PRO</span>
+                    <span className="vb-badge-pro">PRO</span>
                   </div>
                 )}
               </div>
@@ -207,7 +207,7 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
             {/* 2. Positioning */}
             <section className="space-y-6">
               <div className="pb-2 border-b border-gray-50">
-                <h3 className="text-xs font-black uppercase text-gray-900 tracking-widest">Button Positioning</h3>
+                <h3 className="vb-section-title">Button Positioning</h3>
               </div>
 
               <div className="space-y-4">
@@ -247,7 +247,7 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                         <p className="text-[9px] text-gray-400 font-bold uppercase mt-1">Float Right/Bottom / Left/Bottom</p>
                       </div>
                     </div>
-                    <span className="bg-amber-400 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm">PRO</span>
+                    <span className="vb-badge-pro">PRO</span>
                   </div>
                 )}
               </div>
@@ -260,16 +260,12 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                   <div className={`p-1.5 rounded-lg ${settings.is_pro ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400'}`}>
                     <Share2 className="w-4 h-4" />
                   </div>
-                  <h3 className={`text-xs font-black uppercase tracking-widest ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
+                  <h3 className={`vb-section-title !m-0 ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
                     Social Shortcut Bar
                   </h3>
                 </div>
-                {settings.is_pro ? (
-                    <div className="flex items-center gap-1.5 bg-blue-600 text-white text-[8px] font-black px-2 py-0.5 rounded shadow-sm uppercase tracking-widest">
-                       <Check className="w-2.5 h-2.5" /> PRO VERIFIED
-                    </div>
-                ) : (
-                    <span className="bg-amber-400 text-white text-[9px] font-black px-2 py-0.5 rounded shadow-sm uppercase">PRO REQUIRED</span>
+                {!settings.is_pro && (
+                    <span className="vb-badge-pro">PRO</span>
                 )}
               </div>
 
@@ -318,7 +314,7 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
             {/* 3. Order Modal & Form Logic */}
             <section className="space-y-6">
               <div className="pb-2 border-b border-gray-50">
-                <h3 className="text-xs font-black uppercase text-gray-900 tracking-widest">Inquiry Form Logic</h3>
+                <h3 className="vb-section-title">Inquiry Form Logic</h3>
               </div>
 
               <div className="space-y-4">
@@ -332,32 +328,38 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                   </button>
                 </div>
 
-                <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 transition-all duration-300 ${settings.orderModal_enabled === false ? 'opacity-40 pointer-events-none' : ''}`}>
+                <div className={`space-y-4 transition-all duration-300 ${settings.orderModal_enabled === false ? 'opacity-40 pointer-events-none' : ''}`}>
                   <div className="flex items-center justify-between p-3 bg-gray-50/50 rounded-xl border border-gray-100">
                     <div>
-                      <p className="text-[11px] font-bold text-gray-900 uppercase">Auto-fill Profile</p>
-                      <p className="text-[9px] text-gray-400 font-medium">Predict names & emails</p>
+                      <p className="text-sm font-bold text-gray-800">Auto-fill Customer Profile</p>
+                      <p className="text-[11px] text-gray-500">Automatically pre-fill name and email from WooCommerce billing data.</p>
                     </div>
-                    <button onClick={() => updateSetting('orderModal_autoFill', settings.orderModal_autoFill === undefined ? true : !settings.orderModal_autoFill)} className={`vb-toggle-sm ${settings.orderModal_autoFill !== false ? 'vb-toggle--on' : 'vb-toggle--off'}`}>
-                      <div className="vb-toggle-thumb-sm" />
+                    <button 
+                      onClick={() => updateSetting('orderModal_autoFill', settings.orderModal_autoFill === undefined ? false : !settings.orderModal_autoFill)} 
+                      className={`vb-toggle ${settings.orderModal_autoFill !== false ? 'vb-toggle--on' : 'vb-toggle--off'}`}
+                    >
+                      <div className={`vb-toggle-thumb ${settings.orderModal_autoFill !== false ? 'vb-toggle-thumb--on' : 'vb-toggle-thumb--off'}`} />
                     </button>
                   </div>
 
                   <div className="flex items-center justify-between p-3 bg-gray-50/50 rounded-xl border border-gray-100">
                     <div>
-                      <p className="text-[11px] font-bold text-gray-900 uppercase">Skip if repeat</p>
-                      <p className="text-[9px] text-gray-400 font-medium">Auto-open chat direct</p>
+                      <p className="text-sm font-bold text-gray-800">Allow multiple submissions</p>
+                      <p className="text-[11px] text-gray-500">Keep form open for repeat inquiries (variation-aware).</p>
                     </div>
-                    <button onClick={() => updateSetting('orderModal_autoOff', settings.orderModal_autoOff === undefined ? true : !settings.orderModal_autoOff)} className={`vb-toggle-sm ${settings.orderModal_autoOff !== false ? 'vb-toggle--on' : 'vb-toggle--off'}`}>
-                      <div className="vb-toggle-thumb-sm" />
+                    <button 
+                      onClick={() => updateSetting('orderModal_allowRepeat', !settings.orderModal_allowRepeat)} 
+                      className={`vb-toggle ${settings.orderModal_allowRepeat ? 'vb-toggle--on' : 'vb-toggle--off'}`}
+                    >
+                      <div className={`vb-toggle-thumb ${settings.orderModal_allowRepeat ? 'vb-toggle-thumb--on' : 'vb-toggle-thumb--off'}`} />
                     </button>
                   </div>
                 </div>
 
                 {/* PRO Success Action */}
                 <div className={`p-4 rounded-2xl border border-dashed transition-all duration-300 ${!settings.is_pro ? 'border-gray-200 bg-white opacity-40 grayscale cursor-not-allowed' : 'border-blue-100 bg-blue-50/30'} ${settings.orderModal_enabled === false ? 'opacity-40 pointer-events-none grayscale' : ''} relative`}>
-                  {!settings.is_pro && <div className="absolute top-2 right-2 bg-amber-400 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm">PRO</div>}
-                  <p className="text-[11px] font-black text-gray-900 uppercase tracking-widest mb-3">After Submission Action</p>
+                  {!settings.is_pro && <div className="absolute top-2 right-2 vb-badge-pro">PRO</div>}
+                  <p className="vb-label">After Submission Action</p>
                   <div className="flex gap-2">
                     <button 
                       disabled={!settings.is_pro}
@@ -400,15 +402,11 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                    <div className={`p-1.5 rounded-lg ${settings.is_pro ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400'}`}>
                     <ShoppingBag className="w-4 h-4" />
                   </div>
-                  <h3 className={`text-xs font-black uppercase tracking-widest ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
+                  <h3 className={`vb-section-title !m-0 ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
                     Order & Conversion
                   </h3>
                 </div>
-                {settings.is_pro && (
-                   <div className="flex items-center gap-1.5 bg-blue-600 text-white text-[8px] font-black px-2 py-0.5 rounded shadow-sm uppercase tracking-widest">
-                       <Check className="w-2.5 h-2.5" /> PRO VERIFIED
-                    </div>
-                )}
+
               </div>
 
               <div className="space-y-4">
@@ -432,7 +430,7 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                       {!settings.is_pro && <Lock className="w-2.5 h-2.5 text-amber-500" />}
                     </div>
                     {!settings.is_pro && (
-                      <span className="bg-amber-400 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow-sm flex items-center gap-1">
+                      <span className="vb-badge-pro">
                         PRO ONLY
                       </span>
                     )}
@@ -500,15 +498,11 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                    <div className={`p-1.5 rounded-lg ${settings.is_pro ? 'bg-blue-50 text-blue-500' : 'bg-gray-100 text-gray-400'}`}>
                     <Eye className="w-4 h-4" />
                   </div>
-                  <h3 className={`text-xs font-black uppercase tracking-widest ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
+                  <h3 className={`vb-section-title !m-0 ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
                     Branding & Whitelabel
                   </h3>
                 </div>
-                {settings.is_pro && (
-                    <div className="flex items-center gap-1.5 bg-blue-600 text-white text-[8px] font-black px-2 py-0.5 rounded shadow-sm uppercase tracking-widest">
-                       <Check className="w-2.5 h-2.5" /> PRO VERIFIED
-                    </div>
-                )}
+
               </div>
 
               <div className="space-y-4">
@@ -543,15 +537,11 @@ const GlobalSettingsView = ({ settings, updateSetting, handleSave, saving }) => 
                    <div className={`p-1.5 rounded-lg ${settings.is_pro ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400'}`}>
                     <Target className="w-4 h-4" />
                   </div>
-                  <h3 className={`text-xs font-black uppercase tracking-widest ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
+                  <h3 className={`vb-section-title !m-0 ${settings.is_pro ? 'text-gray-900' : 'text-gray-500'}`}>
                     Advanced Targeting
                   </h3>
                 </div>
-                {settings.is_pro && (
-                    <div className="flex items-center gap-1.5 bg-blue-600 text-white text-[8px] font-black px-2 py-0.5 rounded shadow-sm uppercase tracking-widest">
-                       <Check className="w-2.5 h-2.5" /> PRO VERIFIED
-                    </div>
-                )}
+
               </div>
 
               <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 transition-all ${!settings.is_pro ? 'opacity-40 grayscale cursor-not-allowed pointer-events-none' : ''}`}>

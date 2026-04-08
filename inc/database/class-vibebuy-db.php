@@ -90,10 +90,14 @@ class VibeBuy_DB {
 		}
 
 		if ( $result !== false && ! vibebuy_is_pro() ) {
-			// Keep only the most recent 10 connections for lite version.
-			// wpdb->prepare() with %i is the safest way for table names in raw queries
-			$wpdb->query( $wpdb->prepare( "DELETE FROM %i WHERE id NOT IN ( SELECT id FROM ( SELECT id FROM %i ORDER BY created_at DESC LIMIT %d ) AS tmp )", $table_name, $table_name, 10 ) );
-			wp_cache_delete( 'total_connections_count', 'vibebuy' );
+			// Get filtered limit (default 10 for lite)
+			$limit = apply_filters( 'vibebuy_lead_limit', 10 );
+			
+			if ( $limit > 0 ) {
+				// Keep only the most recent N connections for lite version.
+				$wpdb->query( $wpdb->prepare( "DELETE FROM %i WHERE id NOT IN ( SELECT id FROM ( SELECT id FROM %i ORDER BY created_at DESC LIMIT %d ) AS tmp )", $table_name, $table_name, $limit ) );
+				wp_cache_delete( 'total_connections_count', 'vibebuy' );
+			}
 		}
 
 		return $result;

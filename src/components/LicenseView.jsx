@@ -94,30 +94,30 @@ const LicenseView = ({ settings, onUpdateSettings, onToast }) => {
              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-blue-100/20 rounded-full blur-3xl" />
           </div>
         ) : (
-          <div className="vb-section-card p-0 relative overflow-hidden">
-              <div className="vb-section-header border-b border-gray-50 flex items-center gap-4">
-                 <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-inner">
+          <div className="vb-section-card max-w-2xl mx-auto">
+              <div className="vb-section-header flex items-center gap-4">
+                 <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 shadow-inner">
                     <Shield className="w-6 h-6" />
                  </div>
                  <div>
-                    <h3 className="vb-section-title">Activate VibeBuy PRO</h3>
+                    <h3 className="vb-page-title">Activate VibeBuy PRO</h3>
                     <p className="vb-section-subtitle">Enter your license key from Lemon Squeezy to unlock premium features.</p>
                  </div>
               </div>
 
               <div className="p-8 space-y-6">
                  <div className="space-y-3">
-                    <label className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Your License Key</label>
+                    <label className="vb-label">VibeBuy License Key</label>
                     <div className="relative group">
                       <input 
                         type="text"
                         value={key}
                         onChange={(e) => setKey(e.target.value)}
                         placeholder="XXXX-XXXX-XXXX-XXXX"
-                        className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl text-xl font-mono focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white outline-none transition-all shadow-inner"
+                        className="vb-input !h-14 !px-6 !text-xl font-mono"
                       />
                       <div className="absolute right-5 top-1/2 -translate-y-1/2">
-                         <Key className="w-6 h-6 text-gray-300 group-focus-within:text-blue-500 transition-colors" />
+                         <Key className="w-5 h-5 text-gray-300 group-focus-within:text-blue-500 transition-colors" />
                       </div>
                     </div>
                  </div>

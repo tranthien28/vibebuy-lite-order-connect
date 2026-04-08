@@ -47,6 +47,11 @@ const getChannelLink = (channelId, settings, product, manualData) => {
 };
 
 const trackEvent = async (eventType, channelId, productId) => {
+  // Exclude admin pages from analytics
+  if (window.location.pathname.includes('wp-admin')) {
+    return;
+  }
+
   const payload = window.vibebuyWidgetData || {};
   if (!payload.settings?.is_pro) return;
 
@@ -138,13 +143,17 @@ const checkVisibility = (settings, productData) => {
 
   useEffect(() => {
     const productId = product?.id || 'manual';
-    const submittedLocal = localStorage.getItem(`vibebuy_submitted_${channelId}_${productId}`) === 'true';
-    const submittedRemote = payload.submittedInquiries?.includes(`${channelId}|${productId}`);
+    const variationId = product?.variation_id || 0;
+    const submissionKey = `${channelId}|${productId}|${variationId}`;
+    
+    const submittedLocal = localStorage.getItem(`vibebuy_submitted_${submissionKey}`) === 'true';
+    const submittedRemote = payload.submittedInquiries?.some(s => s === submissionKey || s === `${channelId}|${productId}`);
+    
     setHasSubmitted(submittedLocal || submittedRemote);
 
     // Analytics: Widget View
     trackEvent('view', channelId, product?.id || 0);
-  }, [channelId, product?.id, payload.submittedInquiries]);
+  }, [channelId, product?.id, product?.variation_id, payload.submittedInquiries]);
 
   const triggerAction = (e) => {
     if (e) {
@@ -180,10 +189,10 @@ const checkVisibility = (settings, productData) => {
     }
 
     const modalEnabled = settings.orderModal_enabled !== false;
-    const autoOff = settings.orderModal_autoOff === true;
+    const allowRepeat = settings.orderModal_allowRepeat === true;
 
     // Standard product/listing context below - use modal if enabled
-    if (!modalEnabled || (autoOff && hasSubmitted)) {
+    if (!modalEnabled || (hasSubmitted && !allowRepeat)) {
       const link = getChannelLink(channelId === 'global' ? 'whatsapp' : channelId, settings, product, manualData);
       if (link !== '#') window.open(link, '_blank');
       return;
@@ -205,7 +214,10 @@ const checkVisibility = (settings, productData) => {
 
       if (response.ok) {
         const productId = product?.id || 'manual';
-        localStorage.setItem(`vibebuy_submitted_${channelId}_${productId}`, 'true');
+        const variationId = product?.variation_id || 0;
+        const submissionKey = `${channelId}|${productId}|${variationId}`;
+        
+        localStorage.setItem(`vibebuy_submitted_${submissionKey}`, 'true');
         setHasSubmitted(true);
         return true;
       }
@@ -389,7 +401,7 @@ const FloatingBubble = ({ settings, productData }) => {
  
    return (
      <>
-      {showShortcutBar && (
+      {showShortcutBar && settings.is_pro && (
         <SocialShortcutBar 
           settings={settings} 
           channels={shortcutChannels} 
@@ -535,7 +547,21 @@ const bootstrapWidget = () => {
 
     // variation_set: fired after reset (no variation selected)
     variationForm.addEventListener('reset_data', () => {
-      rerenderAllWithProduct({ ...scrapeWooBaseData(), is_in_stock: product?.is_in_stock });
+      rerenderAllWithProduct({ ...scrapeWooBaseData(), is_in_stock: product?.is_in_stock, variation_id: 0 });
+    });
+  }
+
+  // Listen to Quantity changes on the page
+  const qtyInput = document.querySelector('input[name="quantity"]');
+  if (qtyInput) {
+    qtyInput.addEventListener('change', () => {
+      const updated = { ...currentProductRef.current, qty: parseInt(qtyInput.value) || 1 };
+      rerenderAllWithProduct(updated);
+    });
+    // Also listen for input event for real-time sync if user types
+    qtyInput.addEventListener('input', () => {
+      const updated = { ...currentProductRef.current, qty: parseInt(qtyInput.value) || 1 };
+      rerenderAllWithProduct(updated);
     });
   }
 
