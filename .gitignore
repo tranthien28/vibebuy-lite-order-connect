@@ -5,7 +5,7 @@ node_modules
 .idea
 .history
 .svn
-.git
+.git*
 SYSTEM_OVERVIEW.md
 
 # Development Source & Build
